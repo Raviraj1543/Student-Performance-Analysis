@@ -3,10 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "homepage": "https://raviraj1543.github.io/Student-Performance-Analysis/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
@@ -19,6 +21,7 @@
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
+    "gh-pages": "^6.3.0",
     "vite": "^5.1.0"
   }
 }
