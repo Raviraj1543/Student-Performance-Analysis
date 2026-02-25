@@ -1,0 +1,18 @@
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.layout-main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    margin-top: var(--navbar-height);
+    min-height: calc(100vh - var(--navbar-height));
+    transition: margin-left var(--transition-base);
+}
+
+@media (max-width: 768px) {
+    .layout-main {
+        margin-left: 0;
+    }
+}

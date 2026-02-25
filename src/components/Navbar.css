@@ -1,0 +1,114 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    height: var(--navbar-height);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    z-index: 90;
+    transition: left var(--transition-base);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.navbar-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gray-50);
+    border: 1px solid var(--border-color);
+    border-radius: 100px;
+    padding: 8px 16px;
+    min-width: 280px;
+    transition: all var(--transition-fast);
+}
+
+.navbar-search:focus-within {
+    border-color: var(--primary-400);
+    background: white;
+    box-shadow: 0 0 0 3px var(--primary-50);
+}
+
+.navbar-search svg {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.navbar-search input {
+    border: none;
+    background: none;
+    color: var(--text-primary);
+    width: 100%;
+    font-size: 0.875rem;
+}
+
+.navbar-search input::placeholder {
+    color: var(--text-muted);
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.navbar-icon-btn:hover {
+    background: var(--primary-50);
+    color: var(--primary-600);
+}
+
+.navbar-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--error);
+    border: 2px solid white;
+}
+
+.navbar-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        left: 0;
+        padding: 0 16px;
+    }
+
+    .navbar-search {
+        min-width: 160px;
+    }
+
+    .navbar-date {
+        display: none;
+    }
+}

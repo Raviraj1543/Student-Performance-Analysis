@@ -1,0 +1,115 @@
+/* ── Role Toggle ── */
+.signup-role-toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    background: #F1F5F9;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.role-toggle-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.role-toggle-btn.active {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: white;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.role-toggle-btn:not(.active):hover {
+    background: #E2E8F0;
+}
+
+/* ── Signup Card ── */
+.signup-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    animation: fadeInUp 0.5s ease;
+}
+
+.signup-success {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.signup-success-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: #059669;
+    animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.signup-success h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #059669;
+    margin-bottom: 8px;
+}
+
+.signup-success p {
+    color: #64748B;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.signup-student-id {
+    display: inline-block;
+    background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
+    color: #4F46E5;
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 14px 32px;
+    border-radius: 14px;
+    margin: 16px 0;
+    font-family: 'Courier New', monospace;
+    border: 2px solid #C7D2FE;
+}
+
+.signup-success-note {
+    color: #94A3B8 !important;
+    font-size: 0.82rem !important;
+    margin-top: 8px !important;
+    margin-bottom: 24px !important;
+}

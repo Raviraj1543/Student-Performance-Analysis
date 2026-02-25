@@ -1,0 +1,94 @@
+.grade-form-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.grade-form {
+    background: var(--bg-surface);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 480px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: scaleIn 0.3s ease-out;
+}
+
+.grade-form-header {
+    padding: 24px 28px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.grade-form-header h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.grade-form-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: all var(--transition-fast);
+}
+
+.grade-form-close:hover {
+    background: var(--gray-100);
+    color: var(--text-primary);
+}
+
+.grade-form-body {
+    padding: 24px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.grade-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.grade-form-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.grade-form-group select,
+.grade-form-group input {
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    background: var(--gray-50);
+    transition: all var(--transition-fast);
+}
+
+.grade-form-group select:focus,
+.grade-form-group input:focus {
+    border-color: var(--primary-400);
+    background: white;
+    box-shadow: 0 0 0 3px var(--primary-50);
+}
+
+.grade-form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 8px;
+}
