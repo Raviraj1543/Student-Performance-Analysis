@@ -1,38 +1,16 @@
-/* ── Role Toggle ── */
-.signup-role-toggle {
-    display: flex;
-    gap: 0;
-    margin-bottom: 20px;
-    background: #F1F5F9;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.role-toggle-btn {
-    flex: 1;
+/* ── Info Note ── */
+.signup-info-note {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.role-toggle-btn.active {
-    background: linear-gradient(135deg, #6366F1, #8B5CF6);
-    color: white;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-}
-
-.role-toggle-btn:not(.active):hover {
-    background: #E2E8F0;
+    gap: 8px;
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    color: #1E40AF;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
 }
 
 /* ── Signup Card ── */

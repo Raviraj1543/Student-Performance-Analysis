@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { GraduationCap, Users, Eye, EyeOff, User, Mail, Lock, CheckCircle } from 'lucide-react';
+import { GraduationCap, UserPlus, Eye, EyeOff, User, Mail, Lock, CheckCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './SignupPage.css';
 
@@ -11,7 +11,6 @@ export default function SignupPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [role, setRole] = useState('student');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -23,9 +22,9 @@ export default function SignupPage() {
         setLoading(true);
 
         setTimeout(() => {
-            const result = signup(name.trim(), email.trim(), password, role === 'student' ? 'student' : 'teacher');
+            const result = signup(name.trim(), email.trim(), password, 'student');
             if (result.success) {
-                setSuccess(result.studentId || result.facultyId);
+                setSuccess(result.studentId);
             } else {
                 setError(result.message);
             }
@@ -42,7 +41,7 @@ export default function SignupPage() {
                             <CheckCircle size={48} />
                         </div>
                         <h2>Account Created!</h2>
-                        <p>Your unique {role === 'student' ? 'Student' : 'Faculty'} ID is:</p>
+                        <p>Your unique Student ID is:</p>
                         <div className="signup-student-id">{success}</div>
                         <p className="signup-success-note">
                             Please save this ID. You can use it or your email to log in along with your password.
@@ -66,28 +65,12 @@ export default function SignupPage() {
                     <h1>EduTrack</h1>
                 </div>
                 <p className="login-subtitle">
-                    Create your account<br />
-                    Select your role and register below
+                    Create your student account<br />
+                    Fill in your details to register
                 </p>
 
-                {/* Role Toggle */}
-                <div className="signup-role-toggle">
-                    <button
-                        type="button"
-                        className={`role-toggle-btn ${role === 'student' ? 'active' : ''}`}
-                        onClick={() => setRole('student')}
-                    >
-                        <User size={16} />
-                        Student
-                    </button>
-                    <button
-                        type="button"
-                        className={`role-toggle-btn ${role === 'faculty' ? 'active' : ''}`}
-                        onClick={() => setRole('faculty')}
-                    >
-                        <Users size={16} />
-                        Faculty
-                    </button>
+                <div className="signup-info-note">
+                    <span>ℹ️</span> Faculty accounts are created by the administrator only.
                 </div>
 
                 <form className="login-form" onSubmit={handleSubmit}>
@@ -104,7 +87,7 @@ export default function SignupPage() {
                             <input
                                 id="name"
                                 type="text"
-                                placeholder={role === 'student' ? 'Enter your full name' : 'Enter faculty name'}
+                                placeholder="Enter your full name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required
@@ -155,8 +138,8 @@ export default function SignupPage() {
                             <span className="login-spinner"></span>
                         ) : (
                             <>
-                                <Users size={18} />
-                                Create {role === 'student' ? 'Student' : 'Faculty'} Account
+                                <UserPlus size={18} />
+                                Create Student Account
                             </>
                         )}
                     </button>

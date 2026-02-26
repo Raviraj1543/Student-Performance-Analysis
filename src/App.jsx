@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Layout from './components/Layout';
+import HomePage from './pages/HomePage';
+import ContactPage from './pages/ContactPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import TeacherDashboard from './pages/TeacherDashboard';
@@ -31,7 +33,8 @@ export default function App() {
             <Route path="/signup" element={
                 currentUser ? <Navigate to={role === 'teacher' ? '/teacher' : '/student'} replace /> : <SignupPage />
             } />
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
             {/* Teacher Routes */}
             <Route path="/teacher" element={
@@ -83,7 +86,7 @@ export default function App() {
             } />
 
             {/* Fallback */}
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     );
 }
