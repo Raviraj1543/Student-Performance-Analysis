@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { loginUser as apiLogin, signupUser as apiSignup } from '../services/api';
 import { students, facultyUser, findUserByCredentials, getNextStudentId, getNextFacultyId, subjects } from '../data/mockData';
 
 const AuthContext = createContext(null);
@@ -37,7 +38,32 @@ export function AuthProvider({ children }) {
         }
     });
 
-    function login(identifier, password) {
+    async function login(identifier, password) {
+        // Try backend API first
+        try {
+            const data = await apiLogin(identifier, password);
+            if (data.success) {
+                const user = {
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    role: data.role,
+                    studentId: data.studentId,
+                    facultyId: data.facultyId,
+                    department: data.department,
+                };
+                setCurrentUser(user);
+                setRole(user.role);
+                localStorage.setItem('authUser', JSON.stringify(user));
+                return { success: true, role: user.role };
+            } else {
+                return { success: false, message: data.message || 'Login failed' };
+            }
+        } catch (err) {
+            console.warn('Backend login failed, falling back to local auth:', err.message);
+        }
+
+        // Fallback to local/mock auth
         const user = findUserByCredentials(identifier, password);
         if (!user) return { success: false, message: 'Invalid credentials. Please check your Student ID/Email and password.' };
 
@@ -47,7 +73,25 @@ export function AuthProvider({ children }) {
         return { success: true, role: user.role };
     }
 
-    function signup(name, email, password, signupRole) {
+    async function signup(name, email, password, signupRole) {
+        // Try backend API first
+        try {
+            const data = await apiSignup(name, email, password, signupRole);
+            if (data.success) {
+                return {
+                    success: true,
+                    studentId: data.studentId,
+                    facultyId: data.facultyId,
+                    message: data.message,
+                };
+            } else {
+                return { success: false, message: data.message || 'Signup failed' };
+            }
+        } catch (err) {
+            console.warn('Backend signup failed, falling back to local auth:', err.message);
+        }
+
+        // Fallback to local/mock auth
         // Check for duplicate email across all user types
         const allStudents = [...students, ...JSON.parse(localStorage.getItem('registeredStudents') || '[]')];
         const allFaculty = [facultyUser, ...JSON.parse(localStorage.getItem('registeredFaculty') || '[]')];

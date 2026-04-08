@@ -13,20 +13,22 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
-        setTimeout(() => {
-            const result = login(identifier.trim(), password);
+        try {
+            const result = await login(identifier.trim(), password);
             if (result.success) {
                 navigate(result.role === 'teacher' ? '/teacher' : '/student');
             } else {
                 setError(result.message);
             }
-            setLoading(false);
-        }, 500);
+        } catch (err) {
+            setError('Login failed. Please try again.');
+        }
+        setLoading(false);
     };
 
     return (

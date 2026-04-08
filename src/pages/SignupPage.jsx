@@ -15,21 +15,23 @@ export default function SignupPage() {
     const [success, setSuccess] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess(null);
         setLoading(true);
 
-        setTimeout(() => {
-            const result = signup(name.trim(), email.trim(), password, 'student');
+        try {
+            const result = await signup(name.trim(), email.trim(), password, 'student');
             if (result.success) {
                 setSuccess(result.studentId);
             } else {
                 setError(result.message);
             }
-            setLoading(false);
-        }, 600);
+        } catch (err) {
+            setError('Signup failed. Please try again.');
+        }
+        setLoading(false);
     };
 
     if (success) {

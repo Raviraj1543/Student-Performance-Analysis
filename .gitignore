@@ -25,3 +25,6 @@ Thumbs.db
 # logs
 *.log
 npm-debug.log*
+
+# Backend folder (separate repo)
+performance (1)/

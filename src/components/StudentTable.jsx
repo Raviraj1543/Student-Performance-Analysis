@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, ArrowUpDown } from 'lucide-react';
-import { getStudentAvg, getGradeLabel } from '../data/mockData';
+import API from '../services/api';
 import './StudentTable.css';
 
 const avatarColors = [
@@ -9,11 +9,23 @@ const avatarColors = [
     '#10B981', '#F59E0B', '#EF4444', '#06B6D4',
 ];
 
-export default function StudentTable({ students, onStudentClick }) {
+export default function StudentTable() {
+    const [students, setStudents] = useState([]);
     const [search, setSearch] = useState('');
-    const [sortBy, setSortBy] = useState('name');
+    const [sortBy, setSortBy] = useState('subject');
     const [sortDir, setSortDir] = useState('asc');
     const navigate = useNavigate();
+
+    // ✅ FETCH DATA FROM BACKEND
+    useEffect(() => {
+        API.get('/performance')
+            .then(res => {
+                setStudents(res.data);
+            })
+            .catch(err => {
+                console.log("Error fetching data:", err);
+            });
+    }, []);
 
     const handleSort = (key) => {
         if (sortBy === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
@@ -22,93 +34,92 @@ export default function StudentTable({ students, onStudentClick }) {
 
     const filtered = useMemo(() => {
         let list = [...students];
+
         if (search) {
             const q = search.toLowerCase();
             list = list.filter(s =>
-                s.name.toLowerCase().includes(q) ||
-                s.email.toLowerCase().includes(q) ||
-                s.rollNo.includes(q)
+                s.subject.toLowerCase().includes(q) ||
+                String(s.studentId).includes(q)
             );
         }
+
         list.sort((a, b) => {
             let va, vb;
+
             switch (sortBy) {
-                case 'name': va = a.name; vb = b.name; break;
-                case 'avg': va = getStudentAvg(a); vb = getStudentAvg(b); break;
-                case 'attendance': va = a.attendance; vb = b.attendance; break;
-                default: va = a.name; vb = b.name;
+                case 'subject':
+                    va = a.subject;
+                    vb = b.subject;
+                    break;
+                case 'marks':
+                    va = a.marks;
+                    vb = b.marks;
+                    break;
+                default:
+                    va = a.id;
+                    vb = b.id;
             }
-            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+
+            if (typeof va === 'string')
+                return sortDir === 'asc'
+                    ? va.localeCompare(vb)
+                    : vb.localeCompare(va);
+
             return sortDir === 'asc' ? va - vb : vb - va;
         });
+
         return list;
     }, [students, search, sortBy, sortDir]);
 
     return (
         <div className="student-table-wrapper">
             <div className="student-table-header">
-                <h3>Students ({filtered.length})</h3>
+                <h3>Performance ({filtered.length})</h3>
+
                 <div className="student-table-search">
-                    <Search size={14} color="var(--text-muted)" />
+                    <Search size={14} />
                     <input
-                        placeholder="Search students..."
+                        placeholder="Search by subject or student ID..."
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                     />
                 </div>
             </div>
+
             <div style={{ overflowX: 'auto' }}>
                 <table className="student-table">
                     <thead>
                         <tr>
-                            <th onClick={() => handleSort('name')}>
-                                Student <ArrowUpDown size={12} style={{ verticalAlign: 'middle', marginLeft: 4 }} />
+                            <th onClick={() => handleSort('subject')}>
+                                Subject <ArrowUpDown size={12} />
                             </th>
-                            <th>Section</th>
-                            <th onClick={() => handleSort('avg')}>
-                                Average <ArrowUpDown size={12} style={{ verticalAlign: 'middle', marginLeft: 4 }} />
+                            <th>Student ID</th>
+                            <th onClick={() => handleSort('marks')}>
+                                Marks <ArrowUpDown size={12} />
                             </th>
-                            <th>Grade</th>
-                            <th onClick={() => handleSort('attendance')}>
-                                Attendance <ArrowUpDown size={12} style={{ verticalAlign: 'middle', marginLeft: 4 }} />
-                            </th>
-                            <th>Assignments</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        {filtered.map((student, i) => {
-                            const avg = getStudentAvg(student);
-                            const grade = getGradeLabel(avg);
-                            const completion = Math.round((student.assignments.completed / student.assignments.total) * 100);
-                            return (
-                                <tr
-                                    key={student.id}
-                                    onClick={() => onStudentClick ? onStudentClick(student) : navigate(`/teacher/student/${student.id}`)}
-                                >
-                                    <td>
-                                        <span
-                                            className="student-table-avatar"
-                                            style={{ background: avatarColors[i % avatarColors.length] }}
-                                        >
-                                            {student.avatar}
-                                        </span>
-                                        <span className="student-table-name">
-                                            {student.name}
-                                            <span className="student-table-email">{student.email}</span>
-                                        </span>
-                                    </td>
-                                    <td>{student.grade} - {student.section}</td>
-                                    <td><strong>{avg}%</strong></td>
-                                    <td><span className={`badge badge-${grade.color}`}>{grade.label}</span></td>
-                                    <td>
-                                        <span className={`badge ${student.attendance >= 90 ? 'badge-success' : student.attendance >= 80 ? 'badge-warning' : 'badge-error'}`}>
-                                            {student.attendance}%
-                                        </span>
-                                    </td>
-                                    <td>{completion}% ({student.assignments.completed}/{student.assignments.total})</td>
-                                </tr>
-                            );
-                        })}
+                        {filtered.map((item, i) => (
+                            <tr key={item.id}>
+                                <td>
+                                    <span
+                                        className="student-table-avatar"
+                                        style={{ background: avatarColors[i % avatarColors.length] }}
+                                    >
+                                        {item.subject[0]}
+                                    </span>
+                                    {item.subject}
+                                </td>
+
+                                <td>{item.studentId}</td>
+
+                                <td>
+                                    <strong>{item.marks}</strong>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
